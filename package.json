@@ -20,8 +20,5 @@
   "bugs": {
     "url": "https://github.com/M4xi1m3/webdfu/issues"
   },
-  "homepage": "https://github.com/M4xi1m3/webdfu#readme",
-  "dependencies": {
-    "tern": "^0.24.3"
-  }
+  "homepage": "https://github.com/M4xi1m3/webdfu#readme"
 }
