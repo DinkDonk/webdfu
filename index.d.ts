@@ -8,19 +8,19 @@ export namespace DFU {
     class Device {
         constructor(...args: any[]);
 
-        abort(...args: any[]): void;
+        abort(...args: any[]): Promise<void>;
 
-        abortToIdle(...args: any[]): void;
+        abortToIdle(...args: any[]): Promise<void>;
 
-        clearStatus(...args: any[]): void;
+        clearStatus(...args: any[]): Promise<any>;
 
-        close(...args: any[]): void;
+        close(...args: any[]): Promise<void>;
 
-        detach(...args: any[]): void;
+        detach(...args: any[]): Promise<any>;
 
-        do_download(...args: any[]): void;
+        do_download(...args: any[]): Promise<void>;
 
-        do_upload(...args: any[]): void;
+        do_upload(...args: any[]): Promise<Number>;
 
         download(...args: any[]): void;
 
@@ -48,7 +48,7 @@ export namespace DFU {
 
         readDeviceDescriptor(...args: any[]): void;
 
-        readInterfaceNames(...args: any[]): void;
+        readInterfaceNames(...args: any[]): Promise<void>;
 
         readStringDescriptor(...args: any[]): void;
 
@@ -102,9 +102,9 @@ export namespace DFU {
 
     function findAllDfuInterfaces(...args: any[]): void;
 
-    function findDeviceDfuInterfaces(...args: any[]): void;
+    function findDeviceDfuInterfaces(...args: any[]): any[];
 
-    function parseConfigurationDescriptor(...args: any[]): void;
+    function parseConfigurationDescriptor(...args: any[]): any;
 
     function parseDeviceDescriptor(...args: any[]): void;
 
@@ -186,7 +186,7 @@ export namespace DFUse {
 
     function findAllDfuInterfaces(...args: any[]): void;
 
-    function findDeviceDfuInterfaces(...args: any[]): void;
+    function findDeviceDfuInterfaces(...args: any[]): any[];
 
     function parseConfigurationDescriptor(...args: any[]): void;
 
@@ -201,4 +201,3 @@ export namespace DFUse {
     function parseSubDescriptors(...args: any[]): void;
 
 }
-
