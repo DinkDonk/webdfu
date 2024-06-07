@@ -388,47 +388,39 @@ DFU.Device = class {
         );
     }
     
-    requestOut(bRequest, data, wValue=0) {
-        return this.device_.controlTransferOut({
-            "requestType": "class",
-            "recipient": "interface",
-            "request": bRequest,
-            "value": wValue,
-            "index": this.intfNumber
-        }, data).then(
-            result => {
-                if (result.status === "ok") {
-                    return Promise.resolve(result.bytesWritten);
-                } else {
-                    return Promise.reject(result.status);
-                }
-            },
-            error => {
-                return Promise.reject("ControlTransferOut failed: " + error);
-            }
-        );
+    async requestOut(bRequest, data, wValue=0) {
+        let result = await this.device_.controlTransferOut({
+            requestType: "class",
+            recipient: "interface",
+            request: bRequest,
+            value: wValue,
+            index: this.intfNumber
+        }, data);
+
+		if (result.status === "stall") {
+			await this.device_.clearHalt("out", this.intfNumber);
+			throw new Error(result.status);
+		}
+
+		return result.bytesWritten;
     }
     
-    requestIn(bRequest, wLength, wValue=0) {
-        return this.device_.controlTransferIn({
-            "requestType": "class",
-            "recipient": "interface",
-            "request": bRequest,
-            "value": wValue,
-            "index": this.intfNumber
-        }, wLength).then(
-            result => {
-                if (result.status === "ok") {
-                    return Promise.resolve(result.data);
-                } else {
-                    return Promise.reject(result.status);
-                }
-            },
-            error => {
-                console.error(error);
-                return Promise.reject("ControlTransferIn failed: " + error);
-            }
-        );
+    async requestIn(bRequest, wLength, wValue=0) {
+        let result = await this.device_.controlTransferIn({
+            requestType: "class",
+            recipient: "interface",
+            request: bRequest,
+            value: wValue,
+            index: this.intfNumber
+        }, wLength);
+
+        if (result.status === "stall") {
+			await this.device_.clearHalt("in", this.intfNumber);
+			throw new Error(result.status);
+		}
+
+		return result.data;
+
     }
     
     detach() {
