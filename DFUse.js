@@ -210,7 +210,7 @@ DFUse.Device = class extends DFU.Device {
         }
     };
 
-    async do_download(xfer_size, data, manifestationTolerant) {
+    async do_download(xfer_size, data, manifestationTolerant, skipErase=false) {
         if (!this.memoryInfo || ! this.memoryInfo.segments) {
             throw new Error("No memory map available");
         }
@@ -227,7 +227,10 @@ DFUse.Device = class extends DFU.Device {
         } else if (this.getSegment(startAddress) === null) {
             this.logError(`Start address 0x${startAddress.toString(16)} outside of memory map bounds`);
         }
-        await this.erase(startAddress, expected_size);
+
+        if (!skipErase) {
+            await this.erase(startAddress, expected_size);
+        }
 
         this.logInfo("Copying data from browser to DFU device");
 
